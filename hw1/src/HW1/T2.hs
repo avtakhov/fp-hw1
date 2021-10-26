@@ -1,5 +1,8 @@
 module HW1.T2 where
 
+import GHC.Natural (Natural)
+
+
 data N = Z | S N
 
 nplus :: N -> N -> N -- addition
@@ -37,3 +40,11 @@ nmod :: N -> N -> N -- modulo operation
 nmod a b = case nsub a b of
   Nothing -> a
   Just n -> nmod n b
+
+nFromNatural :: Natural -> N
+nFromNatural 0 = Z
+nFromNatural n = S (nFromNatural (n - 1))
+
+nToNum :: Num a => N -> a
+nToNum Z = 0
+nToNum (S n) = 1 + nToNum n

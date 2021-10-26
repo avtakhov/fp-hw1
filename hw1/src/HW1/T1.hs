@@ -1,6 +1,6 @@
 module HW1.T1 where
 
-import Numeric.Natural (Natural)
+import GHC.Natural (Natural)
 
 
 data Day = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday
@@ -24,7 +24,7 @@ nextDay Saturday = Sunday
 nextDay Sunday = Monday
 
 afterDays :: Natural -> Day -> Day
-afterDays 1 d = nextDay d
+afterDays 0 d = d
 afterDays n d = afterDays (n - 1) (nextDay d)
 
 isWeekend :: Day -> Bool
