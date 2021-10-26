@@ -23,17 +23,17 @@ tmember x (Branch _ l val r) = case compare x val of
 correct :: Tree a -> a -> Tree a -> Tree a
 correct l val r = Branch (tsize l + tsize r + 1, max (tdepth l) (tdepth r) + 1) l val r
 
-rotateL :: Tree a -> Tree a
-rotateL (Branch _ (Branch _ ql qval qr) pval pr) = correct ql qval (correct qr pval pr)
-rotateL _ = undefined
-
 rotateR :: Tree a -> Tree a
-rotateR (Branch _ ql qval (Branch _ pl pval pr)) = correct (correct ql qval pl) pval pr
+rotateR (Branch _ (Branch _ ql qval qr) pval pr) = correct ql qval (correct qr pval pr)
 rotateR _ = undefined
+
+rotateL :: Tree a -> Tree a
+rotateL (Branch _ ql qval (Branch _ pl pval pr)) = correct (correct ql qval pl) pval pr
+rotateL _ = undefined
 
 bfactor :: Tree a -> Int
 bfactor Leaf = 0
-bfactor (Branch _ l _ r) = tdepth l - tdepth r
+bfactor (Branch _ l _ r) = tdepth r - tdepth l
 
 balanced :: Tree a -> Tree a
 balanced Leaf = Leaf
