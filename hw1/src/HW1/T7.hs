@@ -24,12 +24,12 @@ instance (Semigroup a, Semigroup b) => Semigroup (Inclusive a b) where
 newtype DotString = DS String
 
 instance Semigroup DotString where
-  (<>) a (DS "nullstring") = a
-  (<>) (DS "nullstring") a = a
+  (<>) a (DS "") = a
+  (<>) (DS "") a = a
   (<>) (DS a) (DS b) = DS $ a ++ "." ++ b
 
 instance Monoid DotString where
-  mempty = DS "nullstring"
+  mempty = DS ""
 
 newtype Fun a = F (a -> a)
 instance Semigroup (Fun a) where

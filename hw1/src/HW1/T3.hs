@@ -23,13 +23,13 @@ tmember x (Branch _ l val r) = case compare x val of
 correct :: Tree a -> a -> Tree a -> Tree a
 correct l val r = Branch (tsize l + tsize r + 1, max (tdepth l) (tdepth r) + 1) l val r
 
-rotateR :: Tree a -> Tree a
-rotateR (Branch _ (Branch _ ql qval qr) pval pr) = correct ql qval (correct qr pval pr)
-rotateR t = t
-
 rotateL :: Tree a -> Tree a
-rotateL (Branch _ ql qval (Branch _ pl pval pr)) = correct (correct ql qval pl) pval pr
-rotateL t = t
+rotateL (Branch _ (Branch _ ql qval qr) pval pr) = correct ql qval (correct qr pval pr)
+rotateL _ = undefined
+
+rotateR :: Tree a -> Tree a
+rotateR (Branch _ ql qval (Branch _ pl pval pr)) = correct (correct ql qval pl) pval pr
+rotateR _ = undefined
 
 bfactor :: Tree a -> Int
 bfactor Leaf = 0
@@ -38,8 +38,8 @@ bfactor (Branch _ l _ r) = tdepth l - tdepth r
 balanced :: Tree a -> Tree a
 balanced Leaf = Leaf
 balanced (Branch _ l val r) = case bfactor $ correct l val r of
-  2 -> if bfactor r < 0 then correct l val (rotateR r) else correct l val r
-  -2 -> if bfactor l > 0 then correct (rotateL l) val r else correct l val r
+  2 -> rotateL $ if bfactor r < 0 then (correct l val (rotateR r)) else correct l val r
+  -2 -> rotateR $ if bfactor l > 0 then correct (rotateL l) val r else correct l val r
   _ -> correct l val r
 
 -- | Insert an element into the tree, O(log n)
